@@ -1,0 +1,35 @@
+.categoryChips {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE & Edge */
+}
+.categoryButton.active {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+.categoryButton:hover {
+  border-color: var(--color-primary);
+}
+.categoryChips::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.categoryButton {
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  border: var(--border-width) solid var(--color-outline);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}

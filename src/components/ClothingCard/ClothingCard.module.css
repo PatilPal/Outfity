@@ -1,0 +1,42 @@
+.card {
+  position: relative;
+
+  width: 100%;
+  aspect-ratio: 3 / 4;
+
+  overflow: hidden;
+
+  border-radius: 12px;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  display: block;
+}
+
+.favorite {
+  position: absolute;
+
+  top: 12px;
+  right: 12px;
+
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+
+  cursor: pointer;
+ background: rgba(252, 249, 248, 0.2);
+  border-radius: var(--radius-md);
+  transition: transform 0.2s ease;
+}
+
+.favorite:hover {
+  transform: scale(1.08);
+}

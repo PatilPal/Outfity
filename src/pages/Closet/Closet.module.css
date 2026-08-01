@@ -1,18 +1,29 @@
+.closet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+  padding-inline: var(--spacing-mobile);
+  max-width: 1200px;
+  width: 100%;
+  margin-inline: auto;
+}
+
 .topRow {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-mobile);
-
-  padding-inline: var(--spacing-mobile);
 }
 
 @media (min-width: 768px) {
+  .closet {
+    padding-inline: var(--spacing-desktop);
+  }
+
   .topRow {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     gap: var(--spacing-desktop);
-    padding-inline: var(--spacing-desktop);
   }
 
   .topRow > *:first-child {
