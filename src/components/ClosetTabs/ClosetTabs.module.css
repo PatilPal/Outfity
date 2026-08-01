@@ -1,0 +1,56 @@
+.tabs {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 4px;
+  background-color: #f4f1f0;
+  border-radius: 8px;
+
+  width: fit-content;
+  margin-inline: auto;
+}
+
+.indicator {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  bottom: 4px;
+
+  background-color: #1c1b1b;
+  border-radius: 8px;
+
+  transition: transform 0.3s ease;
+  z-index: 1;
+}
+
+.button {
+  width: 150px;
+  position: relative;
+  z-index: 2;
+
+  border: none;
+  outline: none;
+  background: transparent;
+
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+
+  color: #1c1b1b;
+  cursor: pointer;
+
+  transition: color 0.2s ease;
+}
+
+.button:hover:not(.active) {
+  color: #ba002b;
+}
+
+.active {
+  color: #fff;
+}

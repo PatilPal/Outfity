@@ -1,0 +1,23 @@
+.topRow {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  padding-inline: 16px;
+}
+
+@media (min-width: 768px) {
+  .topRow {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .topRow > *:first-child {
+    flex: 1;
+  }
+
+  .topRow > *:last-child {
+    flex-shrink: 0;
+  }
+}

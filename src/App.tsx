@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
-import Closet from "./pages/Closet";
+import Closet from "./pages/Closet/Closet";
 import Profile from "./pages/Profile";
 
 function App() {
