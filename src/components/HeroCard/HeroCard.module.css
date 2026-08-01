@@ -3,7 +3,7 @@
   width: 100%;
   height: 420px; 
   overflow: hidden;
-  font-family: "Montserrat", sans-serif;
+  font-family: var(--font-family-base);
 }
 
 .heroCard img {
@@ -11,59 +11,61 @@
   height: 100%;
   object-fit: cover;
 }
+
 .heroCard::after {
   content: "";
   position: absolute;
   inset: 0;
 
-  background: linear-gradient(
-    to top,
-    rgba(0,0,0,0.65),
-    rgba(0,0,0,0.1),
-    transparent
-  );
+  background: var(--gradient-overlay);
 }
 
 .overlay {
   position: absolute;
-  left: 24px;
-  right: 24px;
-  bottom: 24px;
+  left: var(--spacing-gutter);
+  right: var(--spacing-gutter);
+  bottom: var(--spacing-gutter);
 
   z-index: 2;
 
   display: flex;
   flex-direction: column;
-  
 }
+
 .label {
-  font-size: 12px;
-  letter-spacing: 2px;
-  color: white;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--letter-spacing-widest);
+  color: var(--color-text-on-primary);
+  font-weight: var(--font-weight-semibold);
   padding-bottom: 1rem;
 }
 
 .overlay h2 {
-  color: white;
-  font-size: 28px;
-  font-weight: 500;
-  line-height: 1.2;
+  color: var(--color-text-on-primary);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-snug);
   padding-bottom: 1rem;
 }
+
 .overlay button {
   width: fit-content;
 
   padding: 0.85rem 1.8rem;
 
   border: none;
-  border-radius: 1rem;
+  border-radius: var(--radius-xl);
 
-  background: #BA002B;
-  color: white;
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
 
   font-size: clamp(0.9rem, 2vw, 1rem);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 
   cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.overlay button:hover {
+  background: var(--color-primary-hover);
 }

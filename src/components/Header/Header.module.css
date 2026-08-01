@@ -1,28 +1,28 @@
 .header {
   width: 100%;
-  height: 50px;
+  height: var(--header-height);
 
   display: flex;
   align-items: center;
   justify-content: flex-start;
 
-  padding: 0 24px;
+  padding: 0 var(--spacing-gutter);
 
   background-color: var(--color-background);
 
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-subtle);
 }
 
 .logo {
-  font-family: "Montserrat", sans-serif;
+  font-family: var(--font-family-editorial);
   font-size: clamp(1.75rem, 4vw, 2.25rem);
-  font-weight: 900;
-  color: #BA002B;
+  font-weight: var(--font-weight-black);
+  color: var(--color-primary);
 
-  letter-spacing: -0.02em;
+  letter-spacing: var(--letter-spacing-tight);
   margin: 0;
 
   user-select: none;

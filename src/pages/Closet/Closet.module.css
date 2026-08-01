@@ -1,9 +1,9 @@
 .topRow {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--spacing-mobile);
 
-  padding-inline: 16px;
+  padding-inline: var(--spacing-mobile);
 }
 
 @media (min-width: 768px) {
@@ -11,6 +11,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    gap: var(--spacing-desktop);
+    padding-inline: var(--spacing-desktop);
   }
 
   .topRow > *:first-child {
