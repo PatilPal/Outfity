@@ -7,6 +7,7 @@ const categories = [
   "Dresses",
   "Shoes",
   "Accessories",
+  "💖 Fav",
 ];
 
 type CategoryChipsProps = {

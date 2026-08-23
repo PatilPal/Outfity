@@ -1,0 +1,12 @@
+.container{
+    margin:20px 0 ;
+}
+h1{
+    /* color:var(primary) */
+    color: var(--color-text);
+     /* color: r--color-texted; */
+}
+p{
+    font-size: var(--font-size-base);
+    color: var( --color-text-muted);
+}
