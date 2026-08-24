@@ -1,0 +1,42 @@
+.card {
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border-radius: 12px;
+  background-color: #ffffff;
+
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+
+  object-fit: cover;
+  display: block;
+}
+
+.content {
+  padding: 12px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+
+  margin-bottom: 4px;
+}
+
+.count {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}

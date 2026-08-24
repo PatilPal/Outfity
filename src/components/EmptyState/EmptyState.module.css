@@ -1,12 +1,17 @@
-.container{
-    margin:20px 0 ;
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 4rem 1rem;
+  text-align: center;
 }
-h1{
-    /* color:var(primary) */
-    color: var(--color-text);
-     /* color: r--color-texted; */
+
+.container h2 {
+  margin-bottom: 0.5rem;
 }
-p{
-    font-size: var(--font-size-base);
-    color: var( --color-text-muted);
+
+.container p {
+  color: var(--color-text-secondary);
 }

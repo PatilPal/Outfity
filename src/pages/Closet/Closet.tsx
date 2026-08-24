@@ -10,7 +10,8 @@ import Loafers from "../../assets/images/loafers.png";
 import Sweater from "../../assets/images/sweater.png";
 import styles from "./Closet.module.css";
 import EmptyState from "../../components/EmptyState/EmptyState";
-
+import CollectionsView from "../../components/CollectionsView/CollectionsView";
+import { DUMMY_COLLECTIONS } from "../../data/dummyCollections";
 const DUMMY_CLOTHING: ClothingItem[] = [
   {
     id: "1",
@@ -87,8 +88,11 @@ function Closet() {
   };
 
   const filteredClothes = clothingItems.filter((item) => {
-    const matchesCategory = activeCategory === "All" || (activeCategory === "💖 Fav" ? item.isFavorite : item.category === activeCategory);
-     
+    const matchesCategory =
+      activeCategory === "All" ||
+      (activeCategory === "💖 Fav"
+        ? item.isFavorite
+        : item.category === activeCategory);
 
     const matchingSearch =
       searchValue === "" ||
@@ -107,21 +111,25 @@ function Closet() {
         />
         <ClosetTabs activeTab={activeTab} onTabChange={setActiveTab} />
       </div>
-      <CategoryChips
-        activeCategory={activeCategory}
-        onCategoryChange={setActiveCategory}
-      />
-      {filteredClothes.length> 0 ? (
-         <ClothingGrid
-        items={filteredClothes}
-        onToggleFavorite={handleToggleFavorite}
-      />
-      ): (
-        <EmptyState />
-      )
-      
-      }
-     
+      {activeTab === "clothes" ? (
+        <>
+          <CategoryChips
+            activeCategory={activeCategory}
+            onCategoryChange={setActiveCategory}
+          />
+          {filteredClothes.length > 0 ? (
+            <ClothingGrid
+              items={filteredClothes}
+              onToggleFavorite={handleToggleFavorite}
+            />
+          ) : (
+            <EmptyState />
+          )}
+        </>
+      ) : (
+        <CollectionsView 
+        items={DUMMY_COLLECTIONS} />
+      )}
     </div>
   );
 }
