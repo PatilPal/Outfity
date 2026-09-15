@@ -12,6 +12,12 @@ import styles from "./Closet.module.css";
 import EmptyState from "../../components/EmptyState/EmptyState";
 import CollectionsView from "../../components/CollectionsView/CollectionsView";
 import { DUMMY_COLLECTIONS } from "../../data/dummyCollections";
+import FloatingActionButton from "../../components/FloatingActionButton/FloatingActionButton";
+import { Plus } from "lucide-react";
+import CreateCollectionModal from "../../components/CreateCollectionModal/CreateCollectionModal";
+import type { Collection } from "../../types/collection";
+import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
+
 const DUMMY_CLOTHING: ClothingItem[] = [
   {
     id: "1",
@@ -78,6 +84,17 @@ function Closet() {
   const [searchValue, setSearchValue] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [clothingItems, setClothingItems] = useState(DUMMY_CLOTHING);
+  const [isCreateModelOpen, setIsCreateModelOpen] = useState(false);
+  const [collections, setCollections] = useState(DUMMY_COLLECTIONS);
+  const handleAddCollection = (name: string) => {
+    const newCollection: Collection = {
+      id: crypto.randomUUID(),
+      name,
+      coverImage: "",
+      clothesCount: 0,
+    };
+    setCollections((prevCollections) => [...prevCollections, newCollection]);
+  };
 
   const handleToggleFavorite = (id: string) => {
     setClothingItems((prevClothes) =>
@@ -100,6 +117,30 @@ function Closet() {
 
     return matchesCategory && matchingSearch;
   });
+
+  const handleCreateCollection = () => {
+    setIsCreateModelOpen(true);
+  };
+
+  const [collectionToDelete, setCollectionToDelete] = useState<string | null>(
+    null,
+  );
+
+  const handleDeleteCollection = (id: string) => {
+    setCollectionToDelete(id);
+  };
+
+  const confirmDeleteCollection = () => {
+    if (!collectionToDelete) return;
+
+    setCollections((previousCollections) =>
+      previousCollections.filter(
+        (collection) => collection.id !== collectionToDelete,
+      ),
+    );
+
+    setCollectionToDelete(null);
+  };
 
   return (
     <div className={styles.closet}>
@@ -127,9 +168,31 @@ function Closet() {
           )}
         </>
       ) : (
-        <CollectionsView 
-        items={DUMMY_COLLECTIONS} />
+        <CollectionsView
+          items={collections}
+          onDelete={handleDeleteCollection}
+        />
       )}
+      {activeTab === "collections" && (
+        <FloatingActionButton
+          icon={<Plus size={28} />}
+          ariaLabel="Create Collection"
+          onClick={handleCreateCollection}
+        />
+      )}
+      {activeTab === "collections" && (
+        <CreateCollectionModal
+          isOpen={isCreateModelOpen}
+          onClose={() => setIsCreateModelOpen(false)}
+          onCreate={handleAddCollection}
+        />
+      )}
+
+      <ConfirmModal
+        isOpen={collectionToDelete !== null}
+        onClose={() => setCollectionToDelete(null)}
+        onConfirm={confirmDeleteCollection}
+      />
     </div>
   );
 }
