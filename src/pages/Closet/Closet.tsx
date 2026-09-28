@@ -18,6 +18,8 @@ import CreateCollectionModal from "../../components/CreateCollectionModal/Create
 import type { Collection } from "../../types/collection";
 import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
 import CollectionDetail from "../../components/CollectionDetail/CollectionDetail";
+import AddClothingModal from "../../components/AddClothingModal/AddClothingModal";
+import EditClothingModal from "../../components/EditClothingModal/EditClothingModal";
 
 const DUMMY_CLOTHING: ClothingItem[] = [
   {
@@ -86,7 +88,11 @@ function Closet() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [clothingItems, setClothingItems] = useState(DUMMY_CLOTHING);
   const [isCreateModelOpen, setIsCreateModelOpen] = useState(false);
+  const [isAddClothingOpen, setIsAddClothingOpen] = useState(false);
+  const [clothingToEdit, setClothingToEdit] = useState<ClothingItem | null>(null);
+  const [clothingToDelete, setClothingToDelete] = useState<string | null>(null);
   const [collections, setCollections] = useState(DUMMY_COLLECTIONS);
+
   const handleAddCollection = (name: string) => {
     const newCollection: Collection = {
       id: crypto.randomUUID(),
@@ -95,6 +101,53 @@ function Closet() {
       clothingIds: [],
     };
     setCollections((prevCollections) => [...prevCollections, newCollection]);
+  };
+
+  const handleAddClothing = (newItem: {
+    name: string;
+    image: string;
+    category: string;
+    size?: string;
+    color?: string;
+  }) => {
+    const newClothing: ClothingItem = {
+      ...newItem,
+      id: crypto.randomUUID(),
+      isFavorite: false,
+    };
+    setClothingItems((prevItems) => [newClothing, ...prevItems]);
+  };
+
+  const handleSaveEditedClothing = (updatedClothing: ClothingItem) => {
+    setClothingItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === updatedClothing.id ? updatedClothing : item
+      )
+    );
+    setClothingToEdit(null);
+  };
+
+  const handleDeleteClothing = (id: string) => {
+    setClothingToDelete(id);
+  };
+
+  const confirmDeleteClothing = () => {
+    if (!clothingToDelete) return;
+
+    setClothingItems((prevItems) =>
+      prevItems.filter((item) => item.id !== clothingToDelete)
+    );
+
+    setCollections((prevCollections) =>
+      prevCollections.map((collection) => ({
+        ...collection,
+        clothingIds: collection.clothingIds.filter(
+          (id) => id !== clothingToDelete
+        ),
+      }))
+    );
+
+    setClothingToDelete(null);
   };
 
   const handleToggleFavorite = (id: string) => {
@@ -215,20 +268,63 @@ function Closet() {
                 onCategoryChange={setActiveCategory}
               />
 
-              {filteredClothes.length > 0 ? (
+              {clothingItems.length === 0 ? (
+                <EmptyState
+                  title="Your closet is empty"
+                  description="Let's add your first piece to your closet."
+                  action={
+                    <button
+                      type="button"
+                      className={styles.emptyAddButton}
+                      onClick={() => setIsAddClothingOpen(true)}
+                    >
+                      <Plus size={18} />
+                      Add Clothes
+                    </button>
+                  }
+                />
+              ) : filteredClothes.length > 0 ? (
                 <ClothingGrid
                   items={filteredClothes}
                   onToggleFavorite={handleToggleFavorite}
+                  onEdit={(item) => setClothingToEdit(item)}
+                  onDelete={handleDeleteClothing}
                 />
               ) : (
-                <EmptyState />
+                <EmptyState
+                  title="No clothes found🤔"
+                  description="Try another search or category."
+                />
               )}
             </>
+          ) : collections.length === 0 ? (
+            <EmptyState
+              title="No collections yet"
+              description="Create your first collection to organize your wardrobe."
+              action={
+                <button
+                  type="button"
+                  className={styles.emptyAddButton}
+                  onClick={handleCreateCollection}
+                >
+                  <Plus size={18} />
+                  Add Collection
+                </button>
+              }
+            />
           ) : (
             <CollectionsView
               items={collections}
               onCollectionClick={handleOpenCollection}
               onDelete={handleDeleteCollection}
+            />
+          )}
+
+          {activeTab === "clothes" && (
+            <FloatingActionButton
+              icon={<Plus size={28} />}
+              ariaLabel="Add Clothing"
+              onClick={() => setIsAddClothingOpen(true)}
             />
           )}
 
@@ -240,6 +336,14 @@ function Closet() {
             />
           )}
 
+          {activeTab === "clothes" && (
+            <AddClothingModal
+              isOpen={isAddClothingOpen}
+              onClose={() => setIsAddClothingOpen(false)}
+              onAdd={handleAddClothing}
+            />
+          )}
+
           {activeTab === "collections" && (
             <CreateCollectionModal
               isOpen={isCreateModelOpen}
@@ -247,13 +351,32 @@ function Closet() {
               onCreate={handleAddCollection}
             />
           )}
+
+          <EditClothingModal
+            isOpen={clothingToEdit !== null}
+            clothing={clothingToEdit}
+            onClose={() => setClothingToEdit(null)}
+            onSave={handleSaveEditedClothing}
+          />
         </div>
       )}
 
       <ConfirmModal
         isOpen={collectionToDelete !== null}
+        title="Delete Collection?"
+        message="Are you sure you want to delete this collection?"
+        confirmLabel="Delete"
         onClose={() => setCollectionToDelete(null)}
         onConfirm={confirmDeleteCollection}
+      />
+
+      <ConfirmModal
+        isOpen={clothingToDelete !== null}
+        title="Delete Clothing?"
+        message="Are you sure you want to delete this clothing item? It will also be removed from any collections."
+        confirmLabel="Delete"
+        onClose={() => setClothingToDelete(null)}
+        onConfirm={confirmDeleteClothing}
       />
     </>
   );

@@ -93,8 +93,8 @@ export default function CollectionDetail({
         />
       ) : (
         <EmptyState
-          title="No clothes in this collection yet"
-          description="Add pieces from your closet to start styling this collection."
+          title="No clothes added yet"
+          description="Add clothes to this collection to start building your look."
           action={
             <button
               type="button"

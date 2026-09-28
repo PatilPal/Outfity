@@ -8,6 +8,8 @@ type ClothingGridProps = {
   onRemove?: (id: string) => void;
   selectedIds?: string[];
   onSelect?: (id: string) => void;
+  onEdit?: (clothing: ClothingItem) => void;
+  onDelete?: (id: string) => void;
 };
 
 function ClothingGrid({
@@ -16,6 +18,8 @@ function ClothingGrid({
   onRemove,
   selectedIds,
   onSelect,
+  onEdit,
+  onDelete,
 }: ClothingGridProps) {
   return (
     <div className={styles.grid}>
@@ -27,6 +31,8 @@ function ClothingGrid({
           onRemove={onRemove}
           isSelected={selectedIds ? selectedIds.includes(item.id) : undefined}
           onSelect={onSelect}
+          onEdit={onEdit}
+          onDelete={onDelete}
         />
       ))}
     </div>

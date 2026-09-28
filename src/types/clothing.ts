@@ -4,4 +4,6 @@ export type ClothingItem = {
   image: string;
   category: string;
   isFavorite: boolean;
+  size?: string;
+  color?: string;
 };
