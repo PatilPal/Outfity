@@ -17,6 +17,7 @@ import { Plus } from "lucide-react";
 import CreateCollectionModal from "../../components/CreateCollectionModal/CreateCollectionModal";
 import type { Collection } from "../../types/collection";
 import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
+import CollectionDetail from "../../components/CollectionDetail/CollectionDetail";
 
 const DUMMY_CLOTHING: ClothingItem[] = [
   {
@@ -91,7 +92,7 @@ function Closet() {
       id: crypto.randomUUID(),
       name,
       coverImage: "",
-      clothesCount: 0,
+      clothingIds: [],
     };
     setCollections((prevCollections) => [...prevCollections, newCollection]);
   };
@@ -142,50 +143,111 @@ function Closet() {
     setCollectionToDelete(null);
   };
 
+  const [selectedCollectionId, setSelectedCollectionId] = useState<
+    string | null
+  >(null);
+  const handleOpenCollection = (id: string) => {
+    setSelectedCollectionId(id);
+  };
+
+  const selectedCollection = collections.find(
+    (collection) => collection.id === selectedCollectionId,
+  );
+
+  const handleAddClothes = (clothingIdsToAdd: string[]) => {
+    setCollections((previousCollections) =>
+      previousCollections.map((collection) =>
+        collection.id === selectedCollectionId
+          ? {
+              ...collection,
+              clothingIds: [
+                ...collection.clothingIds,
+                ...clothingIdsToAdd,
+              ],
+            }
+          : collection
+      )
+    );
+  };
+
+  const handleRemoveClothing = (clothingId: string) => {
+    setCollections((previousCollections) =>
+      previousCollections.map((collection) =>
+        collection.id === selectedCollectionId
+          ? {
+              ...collection,
+              clothingIds: collection.clothingIds.filter(
+                (id) => id !== clothingId
+              ),
+            }
+          : collection
+      )
+    );
+  };
+
   return (
-    <div className={styles.closet}>
-      <div className={styles.topRow}>
-        <SearchBar
-          value={searchValue}
-          placeholder="Search your closet..."
-          onChange={setSearchValue}
+    <>
+      {selectedCollection ? (
+        <CollectionDetail
+          collection={selectedCollection}
+          clothes={clothingItems}
+          onBack={() => setSelectedCollectionId(null)}
+          onAddClothes={handleAddClothes}
+          onRemoveClothing={handleRemoveClothing}
+          onToggleFavorite={handleToggleFavorite}
         />
-        <ClosetTabs activeTab={activeTab} onTabChange={setActiveTab} />
-      </div>
-      {activeTab === "clothes" ? (
-        <>
-          <CategoryChips
-            activeCategory={activeCategory}
-            onCategoryChange={setActiveCategory}
-          />
-          {filteredClothes.length > 0 ? (
-            <ClothingGrid
-              items={filteredClothes}
-              onToggleFavorite={handleToggleFavorite}
-            />
-          ) : (
-            <EmptyState />
-          )}
-        </>
       ) : (
-        <CollectionsView
-          items={collections}
-          onDelete={handleDeleteCollection}
-        />
-      )}
-      {activeTab === "collections" && (
-        <FloatingActionButton
-          icon={<Plus size={28} />}
-          ariaLabel="Create Collection"
-          onClick={handleCreateCollection}
-        />
-      )}
-      {activeTab === "collections" && (
-        <CreateCollectionModal
-          isOpen={isCreateModelOpen}
-          onClose={() => setIsCreateModelOpen(false)}
-          onCreate={handleAddCollection}
-        />
+        <div className={styles.closet}>
+          <div className={styles.topRow}>
+            <SearchBar
+              value={searchValue}
+              placeholder="Search your closet..."
+              onChange={setSearchValue}
+            />
+
+            <ClosetTabs activeTab={activeTab} onTabChange={setActiveTab} />
+          </div>
+
+          {activeTab === "clothes" ? (
+            <>
+              <CategoryChips
+                activeCategory={activeCategory}
+                onCategoryChange={setActiveCategory}
+              />
+
+              {filteredClothes.length > 0 ? (
+                <ClothingGrid
+                  items={filteredClothes}
+                  onToggleFavorite={handleToggleFavorite}
+                />
+              ) : (
+                <EmptyState />
+              )}
+            </>
+          ) : (
+            <CollectionsView
+              items={collections}
+              onCollectionClick={handleOpenCollection}
+              onDelete={handleDeleteCollection}
+            />
+          )}
+
+          {activeTab === "collections" && (
+            <FloatingActionButton
+              icon={<Plus size={28} />}
+              ariaLabel="Create Collection"
+              onClick={handleCreateCollection}
+            />
+          )}
+
+          {activeTab === "collections" && (
+            <CreateCollectionModal
+              isOpen={isCreateModelOpen}
+              onClose={() => setIsCreateModelOpen(false)}
+              onCreate={handleAddCollection}
+            />
+          )}
+        </div>
       )}
 
       <ConfirmModal
@@ -193,7 +255,7 @@ function Closet() {
         onClose={() => setCollectionToDelete(null)}
         onConfirm={confirmDeleteCollection}
       />
-    </div>
+    </>
   );
 }
 

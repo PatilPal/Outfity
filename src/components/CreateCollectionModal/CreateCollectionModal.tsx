@@ -25,7 +25,7 @@ function CreateCollectionModal({
   if (!isOpen) return null;
 
   return (
-    <div className={styles.overlay}>
+    <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()} >
         <h2 className={styles.title} >Create Collection</h2>
 
@@ -57,7 +57,6 @@ function CreateCollectionModal({
           </button>
         </div>
       </div>
-      onClose();
     </div>
   );
 }

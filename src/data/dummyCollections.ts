@@ -10,24 +10,24 @@ export const DUMMY_COLLECTIONS: Collection[] = [
     id: "1",
     name: "Summer Fits",
     coverImage: Shirt,
-    clothesCount: 12,
+    clothingIds: ["1", "3"],
   },
   {
     id: "2",
     name: "Office Wear",
     coverImage: Blazer,
-    clothesCount: 8,
+    clothingIds: ["2"],
   },
   {
     id: "3",
     name: "Winter Essentials",
     coverImage: Sweater,
-    clothesCount: 10,
+    clothingIds: ["2"],
   },
   {
     id: "4",
     name: "Shoe Collection",
     coverImage: Loafers,
-    clothesCount: 6,
+    clothingIds: ["2"],
   },
 ];
