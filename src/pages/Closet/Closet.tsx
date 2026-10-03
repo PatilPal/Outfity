@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import ClosetTabs from "../../components/ClosetTabs/ClosetTabs";
 import CategoryChips from "../../components/CategoryChips/CategoryChips";
@@ -80,18 +80,65 @@ const DUMMY_CLOTHING: ClothingItem[] = [
   },
 ];
 
+const CLOTHING_STORAGE_KEY = "outfity_clothing_v1";
+const COLLECTION_STORAGE_KEY = "outfity_collections_v1";
+
+function loadFromStorage<T>(key: string, fallback: T): T {
+  try {
+    const savedData = localStorage.getItem(key);
+
+    if (savedData === null) {
+      return fallback;
+    }
+
+    return JSON.parse(savedData) as T;
+  } catch (error) {
+    console.error(`Failed to load ${key}:`, error);
+    return fallback;
+  }
+}
+
 function Closet() {
   const [activeTab, setActiveTab] = useState<"clothes" | "collections">(
     "clothes",
   );
   const [searchValue, setSearchValue] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
-  const [clothingItems, setClothingItems] = useState(DUMMY_CLOTHING);
+  // const [clothingItems, setClothingItems] = useState(DUMMY_CLOTHING);
   const [isCreateModelOpen, setIsCreateModelOpen] = useState(false);
   const [isAddClothingOpen, setIsAddClothingOpen] = useState(false);
   const [clothingToEdit, setClothingToEdit] = useState<ClothingItem | null>(null);
   const [clothingToDelete, setClothingToDelete] = useState<string | null>(null);
-  const [collections, setCollections] = useState(DUMMY_COLLECTIONS);
+  // const [collections, setCollections] = useState(DUMMY_COLLECTIONS);
+
+  const [clothingItems, setClothingItems] = useState<ClothingItem[]>(() =>
+  loadFromStorage(CLOTHING_STORAGE_KEY, DUMMY_CLOTHING),
+);
+
+const [collections, setCollections] = useState<Collection[]>(() =>
+  loadFromStorage(COLLECTION_STORAGE_KEY, DUMMY_COLLECTIONS),
+);
+useEffect(() => {
+  try {
+    localStorage.setItem(
+      CLOTHING_STORAGE_KEY,
+      JSON.stringify(clothingItems),
+    );
+  } catch (error) {
+    console.error("Failed to save clothing items:", error);
+  }
+}, [clothingItems]);
+
+useEffect(() => {
+  try {
+    localStorage.setItem(
+      COLLECTION_STORAGE_KEY,
+      JSON.stringify(collections),
+    );
+  } catch (error) {
+    console.error("Failed to save collections:", error);
+  }
+}, [collections]);
 
   const handleAddCollection = (name: string) => {
     const newCollection: Collection = {
